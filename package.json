@@ -1,0 +1,14 @@
+{
+  "name": "mongoose-rest-utils",
+  "version": "1.0.0",
+  "description": "Mongoose utils functions for REST API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "mongoose-paginate": "^5.0.3"
+  }
+}
