@@ -7,7 +7,7 @@ var express = require('express');
 var app = express();
 const utils_message = require("./utils_message");
 
-const basicDelete = function (req, res, objectName, Model, next) {
+const basicDelete = function (req, res, Model, next) {
 
     Model.findOneAndRemove({_id: req.params.id}, function (err) {
         if (err)
