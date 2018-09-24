@@ -27,14 +27,22 @@ req.query['limit'] = 5; //integer maximum number of result returned, same as SQL
 req.query['page'] = 5 //integer page you want to access, starting from 0, each page contains 'limit' result
 ```
 
+####COUTING
+If you want to get a SQL COUNT equivalent, just provide this into the query : 
+
+```javascript
+req.query['count'] = true;
+```
+
 ####FILTERING
 
-It also takes severals parameter for filtering and/or populating field on the entity you request. For example let's say I want to get people whose firstname are John, but exclude their age from the result : 
+It also takes severals parameter for filtering and/or populating field on the entity you request. For example let's say I want to get people whose firstname are John, exclude their age from the result, oh and ones with "Smith" lastname are ignored: 
 
 
 ```javascript
 req.query["firstname"] = "John"; //firstname being the attribut in your model
-req.query["not_age"] = true;
+req.query["no_age"] = true;
+req.query["not_lastname"] = "Smith"; //case incensitive
 ```
 
 ####POPULATING
