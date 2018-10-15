@@ -9,7 +9,7 @@ const utils_message = require("./utils_message");
 const paginateGet = require("./paginateGet");
 
 
-const basicGet = function (req, res, objectName, Model, next) {
+const basicGet = function (req, res, Model, next) {
     var options = {};
     var populateArray = [];
     var sortString = "-createdAt";
