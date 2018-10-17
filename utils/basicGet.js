@@ -23,7 +23,7 @@ const basicGet = function (req, res, Model, next) {
                 populateArray.push({path: value, populate: {path: req.query[key]}});
             }
             else if (key.indexOf("populate_nested") != -1) {
-                populateArray.push(key.split("_")[2] + "." + req.query[key]);
+                populateArray.push({path: key.split("_")[2], populate: {path: req.query[key]}});
             }
             else if (key.indexOf("populate_") != -1) {
                 populateArray.push(key.split("_")[1]);
