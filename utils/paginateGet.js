@@ -14,8 +14,8 @@ const paginateGet = function (req, res, Model, populateArray, options, next) {
         sort: "-createdAt",
         populate : populateArray
     }, function (err, data) {
-        if (err) throw err;
-        if (next) {
+      if (err) return res.status(500).json({success : false, data : err});
+      if (next) {
             return next(req, res, data);
         }
         else {
