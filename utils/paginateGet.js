@@ -7,7 +7,7 @@ var express = require('express');
 var app = express();
 const utils_message = require("./utils_message");
 
-const paginateGet = function (req, res, Model, populateArray, options, next) {
+const paginateGet = function (req, res, Model, populateArray, options, sortString, noString, next) {
     Model.paginate(options, {
         page: req.query.page,
         limit: req.query.limit,

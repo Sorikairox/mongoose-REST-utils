@@ -43,7 +43,7 @@ const basicGet = function (req, res, Model, next) {
     }
   }
   if (req.query.limit && req.query.page) {
-    paginateGet(req, res, Model, populateArray, options, sortString);
+    paginateGet(req, res, Model, populateArray, options, sortString, noString, next);
   }
   else if (req.query.count) {
     countGet(req, res, Model, options);
