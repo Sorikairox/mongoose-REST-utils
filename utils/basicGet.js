@@ -50,7 +50,7 @@ const basicGet = function (req, res, Model, next) {
   }
   else {
     Model.find(options, noString).sort(sortString).populate(populateArray).exec(function (err, data) {
-      if (err) throw err;
+      if (err) return res.status(500).json({success : false, data : err});
       if (next) {
         return next(req, res, data);
       }
