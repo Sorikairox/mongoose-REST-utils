@@ -3,15 +3,12 @@
  */
 
 
-var express = require('express');
-var app = express();
-const utils_message = require("./utils_message");
-
 const paginateGet = function (req, res, Model, populateArray, options, sortString, noString, next) {
     Model.paginate(options, {
+      select : noString,
         page: req.query.page,
         limit: req.query.limit,
-        sort: "-createdAt",
+        sort: sortString,
         populate : populateArray
     }, function (err, data) {
       if (err) return res.status(500).json({success : false, data : err});

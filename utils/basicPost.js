@@ -3,10 +3,6 @@
  */
 
 
-var express = require('express');
-var app = express();
-const utils_message = require("./utils_message");
-
 const basicPost = function (req, res,  Model, next) {
     if (req.body.data) {
         var newObject = new Model(req.body.data);

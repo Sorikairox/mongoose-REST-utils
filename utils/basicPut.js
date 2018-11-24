@@ -2,11 +2,6 @@
  * Created by Sorikairo on 17/08/2016.
  */
 
-
-var express = require('express');
-var app = express();
-const utils_message = require("./utils_message");
-
 const basicPut = function (req, res, Model, next) {
   if (req.body.data) {
     Model.findByIdAndUpdate(req.body.data._id, req.body.data, {new: true}, function (err, updatedObject) {
