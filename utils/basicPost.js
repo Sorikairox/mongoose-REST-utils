@@ -4,8 +4,8 @@
 
 
 const basicPost = function (req, res, Model, next) {
-  if (req.body.data) {
-    var newObject = new Model(req.body.data);
+  if (req.body) {
+    var newObject = new Model(req.body);
     newObject.save(function (err) {
       if (err) return res.status(500).json({success: false, data: err});
       if (next) {

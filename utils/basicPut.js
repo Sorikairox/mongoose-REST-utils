@@ -3,8 +3,8 @@
  */
 
 const basicPut = function (req, res, Model, next) {
-  if (req.body.data) {
-    Model.findByIdAndUpdate(req.body.data._id, req.body.data, {new: true}, function (err, updatedObject) {
+  if (req.body) {
+    Model.findByIdAndUpdate(req.body._id, req.body, {new: true}, function (err, updatedObject) {
       if (err) return res.status(500).json({success: false, data: err});
       if (next) {
         return next(req, res, updatedObject);
