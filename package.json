@@ -1,6 +1,6 @@
 {
   "name": "mongoose-rest-utils",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "description": "Mongoose utils functions for REST API",
   "main": "index.js",
   "scripts": {
