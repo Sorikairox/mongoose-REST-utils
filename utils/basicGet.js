@@ -9,7 +9,9 @@ const basicGet = function (req, res, Model, next) {
   var options = {};
   var populateArray = [];
   var sortString = "-createdAt";
-  var noString = "-password";
+  var getterString = "";
+  var exclusion = false;
+  var inclusion = false;
   for (var key in req.query) {
     if (req.query[key] != undefined && req.query[key] != "undefined") {
       if (req.query[key] == "false")
@@ -22,11 +24,24 @@ const basicGet = function (req, res, Model, next) {
       else if (key.indexOf("populate_") != -1) {
         populateArray.push(key.split("_")[1]);
       }
+      else if (key.indexOf("only_") != -1) {
+        inclusion = true;
+        if (!exclusion)
+          getterString += " " + key.split("_")[1];
+        else {
+          return res.status('402').json({success: false, data: {error: "CannotIncludeAndExcludePropertiesAtTheSameTime"}});
+        }
+      }
       else if (key.indexOf("not_") != -1) {
         options[key.split("_")[1]] = {$ne: req.query[key]};
       }
       else if (key.indexOf("no_") != -1) {
-        noString += " -" + key.split("_")[1];
+        exclusion = true;
+        if (!inclusion)
+          getterString += " -" + key.split("_")[1];
+        else {
+          return res.status('402').json({success: false, data: {error: "CannotIncludeAndExcludePropertiesAtTheSameTime"}});
+        }
       }
       else if (key.indexOf("like_") != -1) {
         options[key.split("_")[1]] = new RegExp(req.query[key], "i");
@@ -42,14 +57,22 @@ const basicGet = function (req, res, Model, next) {
       }
     }
   }
+  if (inclusion)
+  {
+    getterString = getterString.replace("password", "");
+  }
+  if (exclusion)
+  {
+    getterString += " -password";
+  }
   if (req.query.limit && req.query.page) {
-    paginateGet(req, res, Model, populateArray, options, sortString, noString, next);
+    paginateGet(req, res, Model, populateArray, options, sortString, getterString, next);
   }
   else if (req.query.count) {
     countGet(req, res, Model, options);
   }
   else {
-    Model.find(options, noString).sort(sortString).populate(populateArray).exec(function (err, data) {
+    Model.find(options, getterString).sort(sortString).populate(populateArray).exec(function (err, data) {
       if (err) return res.status(500).json({success : false, data : err});
       if (next) {
         return next(req, res, data);
