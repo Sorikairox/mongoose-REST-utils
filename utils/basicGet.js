@@ -13,56 +13,64 @@ const basicGet = function (req, res, Model, next) {
   var exclusion = false;
   var inclusion = false;
   for (var key in req.query) {
-    if (req.query[key] != undefined && req.query[key] != "undefined") {
-      if (req.query[key] == "false")
+    if (req.query[key] !== undefined && req.query[key] != = "undefined") {
+      if (req.query[key] === "false")
         req.query[key] = false;
-      if (req.query[key] == "true")
+      if (req.query[key] === "true")
         req.query[key] = true;
-      if (key.indexOf("populate_nested") != -1) {
+      if (key.indexOf("populate_nested") !== -1) {
         populateArray.push({path: key.split("_")[2], populate: {path: req.query[key]}});
       }
-      else if (key.indexOf("populate_") != -1) {
+      else if (key.indexOf("populate_") !== -1) {
         populateArray.push(key.split("_")[1]);
       }
-      else if (key.indexOf("only_") != -1) {
+      else if (key.indexOf("only_") !== -1) {
         inclusion = true;
         if (!exclusion)
           getterString += " " + key.split("_")[1];
         else {
-          return res.status('402').json({success: false, data: {error: "CannotIncludeAndExcludePropertiesAtTheSameTime"}});
+          return res.status('402').json({
+            success: false,
+            data: {error: "CannotIncludeAndExcludePropertiesAtTheSameTime"}
+          });
         }
       }
-      else if (key.indexOf("not_") != -1) {
+      else if (key.indexOf("not_") !== -1) {
         options[key.split("_")[1]] = {$ne: req.query[key]};
       }
-      else if (key.indexOf("no_") != -1) {
+      else if (key.indexOf("no_") !== -1) {
         exclusion = true;
         if (!inclusion)
           getterString += " -" + key.split("_")[1];
         else {
-          return res.status('402').json({success: false, data: {error: "CannotIncludeAndExcludePropertiesAtTheSameTime"}});
+          return res.status('402').json({
+            success: false,
+            data: {error: "CannotIncludeAndExcludePropertiesAtTheSameTime"}
+          });
         }
       }
-      else if (key.indexOf("like_") != -1) {
+      else if (key.indexOf("like_") !== -1) {
         options[key.split("_")[1]] = new RegExp(req.query[key], "i");
       }
-      else if (key.indexOf("sort_") != -1) {
-        sortString += ((req.query[key] == "asc") ? "" : "-") + key.split("_")[1];
+      else if (key.indexOf("sort_") !== -1) {
+        sortString += ((req.query[key] === "asc") ? "" : "-") + key.split("_")[1];
       }
       else {
-        if (key != "limit" && key != 'page')
-          options[key] = req.query[key];
+        if (key !== "limit" && key !== 'page') {
+          if (typeof req.query[key] === "string")
+            options[key] = req.query[key];
+          else
+            options[key] = {$in: req.query[key]};
+        }
         else
           req.query[key] = Number.parseInt(req.query[key]);
       }
     }
   }
-  if (inclusion)
-  {
+  if (inclusion) {
     getterString = getterString.replace("password", "");
   }
-  if (exclusion)
-  {
+  if (exclusion) {
     getterString += " -password";
   }
   if (req.query.limit && req.query.page) {
@@ -73,7 +81,7 @@ const basicGet = function (req, res, Model, next) {
   }
   else {
     Model.find(options, getterString).sort(sortString).populate(populateArray).exec(function (err, data) {
-      if (err) return res.status(500).json({success : false, data : err});
+      if (err) return res.status(500).json({success: false, data: err});
       if (next) {
         return next(req, res, data);
       }
