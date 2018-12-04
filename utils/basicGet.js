@@ -13,7 +13,7 @@ const basicGet = function (req, res, Model, next) {
   var exclusion = false;
   var inclusion = false;
   for (var key in req.query) {
-    if (req.query[key] !== undefined && req.query[key] != = "undefined") {
+    if (req.query[key] !== undefined && req.query[key] !== "undefined") {
       if (req.query[key] === "false")
         req.query[key] = false;
       if (req.query[key] === "true")
