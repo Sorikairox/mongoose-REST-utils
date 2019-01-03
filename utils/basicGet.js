@@ -8,7 +8,7 @@ const countGet = require('./countGet');
 const basicGet = function (req, res, Model, next) {
   var options = {};
   var populateArray = [];
-  var sortString = '-createdAt';
+  var sortString = '';
   var getterString = '';
   var exclusion = false;
   var inclusion = false;
@@ -53,7 +53,7 @@ const basicGet = function (req, res, Model, next) {
         options[key.split('_')[1]] = new RegExp(req.query[key], 'i');
       }
       else if (key.indexOf('sort_') !== -1) {
-        sortString += ((req.query[key] === 'asc') ? '' : '-') + key.split('_')[1];
+        sortString += ((req.query[key] === 'asc') ? ' ' : ' -') + key.split('_')[1];
       }
       else if (key.indexOf('greater_') !== -1) {
         options[key.split('_')[1]] = {$gt: req.query[key]};
