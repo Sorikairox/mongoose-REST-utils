@@ -61,6 +61,9 @@ const basicGet = function (req, res, Model, next) {
       else if (key.indexOf('lower_') !== -1) {
         options[key.split('_')[1]] = {$lt: req.query[key]};
       }
+      else if (key.indexOf('exists_') !== -1) {
+          options[key.split('_')[1]] = {$exists: req.query[key]};
+      }
       else {
         if (key !== 'limit' && key !== 'page') {
           if (typeof req.query[key] === 'string')
