@@ -5,6 +5,8 @@
 const paginateGet = require('./paginateGet');
 const countGet = require('./countGet');
 
+let whitelist_keyword = ['$or', '$and'];
+
 const basicGet = function (req, res, Model, next) {
   var options = {};
   var populateArray = [];
@@ -63,6 +65,9 @@ const basicGet = function (req, res, Model, next) {
       }
       else if (key.indexOf('exists_') !== -1) {
           options[key.split('_')[1]] = {$exists: req.query[key]};
+      }
+      else if (whitelist_keyword.includes(key)) {
+          options[key] = req.query[key];
       }
       else {
         if (key !== 'limit' && key !== 'page') {
