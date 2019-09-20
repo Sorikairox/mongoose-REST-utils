@@ -58,10 +58,10 @@ const basicGet = function (req, res, Model, next) {
         sortString += ((req.query[key] === 'asc') ? ' ' : ' -') + key.split('_')[1];
       }
       else if (key.indexOf('greater_') !== -1) {
-        options[key.split('_')[1]] = {$gt: req.query[key]};
+        options[key.split('_')[1]] = {$gt: req.query[key], ...options[key.split('_')[1]]};
       }
       else if (key.indexOf('lower_') !== -1) {
-        options[key.split('_')[1]] = {$lt: req.query[key]};
+        options[key.split('_')[1]] = {$lt: req.query[key], ...options[key.split('_')[1]]};
       }
       else if (key.indexOf('exists_') !== -1) {
           options[key.split('_')[1]] = {$exists: req.query[key]};
